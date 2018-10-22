@@ -52,5 +52,32 @@ User has one profile
 - You want to build a virtual pinboard, so you’ll have users on your platform who can create “pins”. Each pin will contain the URL to an image on the web. Users can comment on pins (but can’t comment on comments)
 
 ```ruby
+Users
+-----
+id: integer
+created_at: datetime
+updated_at: datetime
+
+has_many pins
+has_one comment
+
+Pins
+----
+id: integer
+created_at: datetime
+updated_at: datetime
+image_url: string [present]
+belongs_to user
+has_many comments 
+
+Comments
+--------
+id: integer
+created_at: datetime
+updated_at: datetime
+user_id: integer
+pind_id: integer
+
+belongs_to Pin
 
 ```
