@@ -58,8 +58,8 @@ id: integer
 created_at: datetime
 updated_at: datetime
 
-has_many pins
-has_one comment
+has_many :pins
+has_one :comment
 
 Pins
 ----
@@ -67,8 +67,9 @@ id: integer
 created_at: datetime
 updated_at: datetime
 image_url: string [present]
-belongs_to user
-has_many comments 
+
+belongs_to :user
+has_many :comments 
 
 Comments
 --------
@@ -78,6 +79,6 @@ updated_at: datetime
 user_id: integer
 pind_id: integer
 
-belongs_to Pin
+belongs_to :pin
 
 ```
