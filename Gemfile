@@ -13,6 +13,7 @@ gem 'rails', '~> 5.2.1'
 gem 'sass-rails', '~> 5.0'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
+gem 'bcrypt',         '3.1.12'
 # gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
 #
