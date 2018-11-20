@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  before_save { email.downcase! }
+  before_save :downcase_email
+  validate :admin_exist, on: [:create, :update]
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
@@ -13,5 +14,18 @@ class User < ApplicationRecord
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
+  end
+
+
+  private
+
+  def admin_exist
+    if User.find_by_admin(true)
+      self.errors.add(:admin, "already exist")
+    end
+  end
+
+  def downcase_email
+    self.email = email.downcase
   end
 end
