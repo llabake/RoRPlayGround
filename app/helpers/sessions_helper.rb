@@ -4,19 +4,17 @@ module SessionsHelper
     session[:user_id] = user.id
   end
 
-  # Remembers a user in a persistent session.
   def remember(user)
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
   end
 
-  # Returns the current logged-in user (if any).
   def current_user
-    if session[:user_id]
-      if (user_id = session[:user_id])
+    if session_user
+      if (user_id = session_user)
         @current_user ||= find_user(user_id)
-      elsif (user_id = cookies.signed[:user_id])
+      elsif (user_id = cookie_user)
         user = find_user(user_id)
         login(user)
       end
@@ -56,6 +54,14 @@ module SessionsHelper
 
   private
 
+  def cookie_user
+    cookies.signed[:user_id]
+  end
+
+  def session_user
+    session[:user_id]
+  end
+
   def login(user)
     if user && user.authenticated?(cookies[:remember_token])
       log_in user
@@ -65,5 +71,9 @@ module SessionsHelper
 
   def find_user(user_id)
     User.find_by(id: user_id)
+  end
+
+  def user_exists
+    User.find_by(email: params[:session][:email].downcase)
   end
 end
