@@ -13,7 +13,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = find_user
   end
 
   def create
@@ -38,11 +37,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = find_user
     @user.destroy
-    flash[:success] = "User deleted"
-    redirect_to users_url
-  rescue ActiveRecord::NotFound
+    redirect_to users_url, flash: {success: "Successfully deleted user"}
+  rescue ActiveRecord::NotFound => e
     flash[:notice] = "User not found"
   end
 
