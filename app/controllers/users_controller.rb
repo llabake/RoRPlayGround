@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   before_action :correct_user,   only: [:edit, :update]
-  before_action :admin_user,     only: :destroy
+  before_action :admin_user,  :admin_exist,    only: :destroy
   before_action :find_user, only: [:show, :destroy]
 
   def index
@@ -71,6 +71,13 @@ class UsersController < ApplicationController
   def admin_user
     unless current_user.admin?
       flash[:danger] = 'Admin functionality'
+      redirect_to(root_url)
+    end
+  end
+
+  def admin_exist
+    if User.where(admin: true).count == 2
+      flash[:danger] = "You cannot delete the last admin"
       redirect_to(root_url)
     end
   end
