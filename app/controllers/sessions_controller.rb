@@ -1,12 +1,12 @@
 class SessionsController < ApplicationController
+  before_action :find_user, only: [:create]
   def new
   end
 
   def create
-    user = find_user
-    if user&.authenticate(params[:session][:password])
-      log_in user
-      redirect_to user
+    if @user&.authenticate(params[:session][:password])
+      log_in @user
+      redirect_back_or @user
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
@@ -21,6 +21,6 @@ class SessionsController < ApplicationController
   private
 
   def find_user
-    User.find_by(email: params[:session][:email].downcase)
+    @user = User.find_by(email: params[:session][:email].downcase)
   end
 end
