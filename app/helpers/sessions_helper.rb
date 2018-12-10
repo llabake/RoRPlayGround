@@ -12,13 +12,13 @@ module SessionsHelper
 
   def find__user__by__session
     if (user_id = session[:user_id])
-      @current_user ||= find_user(user_id)
+      @current_user ||= find__user(user_id)
     end
   end
 
   def find_user_by_cookies
      if(user_id = cookies.signed[:user_id])
-       user = find_user(user_id)
+       user = find__user(user_id)
        login(user)
      end
   end
@@ -70,7 +70,7 @@ module SessionsHelper
     end
   end
 
-  def find_user(user_id)
+  def find__user(user_id)
     User.find_by(id: user_id)
   end
 
