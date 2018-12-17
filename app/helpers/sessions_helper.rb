@@ -65,7 +65,7 @@ module SessionsHelper
   private
 
   def login(user)
-    if user && user.authenticated?(cookies[:remember_token])
+    if user && user.authenticated?(:remember, cookies[:remember_token])
       log_in user
       @current_user = user
     end
@@ -77,5 +77,13 @@ module SessionsHelper
 
   def user_exists
     User.find_by(email: params[:session][:email].downcase)
+  end
+
+  def authenticate_user(user)
+    user.authenticate(params[:session][:password])
+  end
+
+  def remember_user(user)
+    params[:session][:remember_me] == '1' ? remember(user) : forget(user)
   end
 end
